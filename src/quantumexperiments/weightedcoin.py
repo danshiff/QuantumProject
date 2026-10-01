@@ -1,7 +1,7 @@
 import math
 from qiskit import QuantumCircuit
 
-import experimentlibrary as lib
+from . import experimentlibrary as lib
 
 
 class WeightedCoinFlipExperiment:
