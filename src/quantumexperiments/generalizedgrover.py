@@ -1,8 +1,6 @@
 import math
 from qiskit import QuantumCircuit
 
-from . import experimentlibrary as lib
-
 
 class GeneralizedGrover:
     def __init__(self, target, oracle_phase=math.pi, diffuser_phase=math.pi):
@@ -65,13 +63,3 @@ class GeneralizedGrover:
     def x_all(self):
         for ii in range(len(self.target)):
             self.circuit.x(ii)
-
-
-def main():
-    experiment = GeneralizedGrover("010100", math.pi / 4)
-    outcome = lib.perform(experiment, 100)
-    lib.print_outcome(outcome)
-
-
-if __name__ == "__main__":
-    main()

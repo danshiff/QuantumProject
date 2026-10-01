@@ -15,11 +15,3 @@ def get_iter(outcome):
 
 def print_outcome(outcome):
     print(outcome[0].data.meas.get_counts())
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()

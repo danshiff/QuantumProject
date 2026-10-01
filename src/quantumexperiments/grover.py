@@ -1,8 +1,6 @@
 import math
 from qiskit import QuantumCircuit
 
-from . import experimentlibrary as lib
-
 
 class Grover:
     def __init__(self, target):
@@ -63,13 +61,3 @@ class Grover:
     def x_all(self):
         for ii in range(len(self.target)):
             self.circuit.x(ii)
-
-
-def main():
-    experiment = Grover("010100")
-    outcome = lib.perform(experiment, 100)
-    lib.print_outcome(outcome)
-
-
-if __name__ == "__main__":
-    main()
