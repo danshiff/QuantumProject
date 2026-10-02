@@ -13,5 +13,5 @@ class TestCoinFlip(unittest.TestCase):
         state = Statevector.from_instruction(experiment.circuit)
 
         expected = 1 / 2**0.5
-        self.assertAlmostEqual(abs(state[0]), expected)
-        self.assertAlmostEqual(abs(state[1]), expected)
+        self.assertAlmostEqual(abs(state["0"]), expected)
+        self.assertAlmostEqual(abs(state["1"]), expected)
