@@ -13,6 +13,15 @@ class TestGrover(unittest.TestCase):
         self.target_state = "1011"
         self.experiment = Grover(self.target_state)
 
+    def test_target_converted_to_string(self):
+        experiment = Grover(1011)
+        expected = self.target_state
+        self.assertEqual(expected, experiment.target)
+
+    def test_value_error_if_target_not_binary(self):
+        with self.assertRaises(ValueError):
+            Grover("1002")
+
     def test_find_number_of_times(self):
         expected_number_of_oracle_diffusion_loops = 3
         actual = self.experiment.find_optimal_times()

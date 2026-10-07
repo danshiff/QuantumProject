@@ -4,10 +4,11 @@ from qiskit import QuantumCircuit
 
 class Grover:
     def __init__(self, target):
-        for ch in str(target):
-            assert ch in "01"
-        self.target = target
-        self.circuit = QuantumCircuit(len(target))
+        self.target = str(target)
+        for ch in str(self.target):
+            if ch not in "01":
+                raise ValueError("Target must be binary string")
+        self.circuit = QuantumCircuit(len(self.target))
         self.initialize()
         times = self.find_optimal_times()
         self.grover(times)
