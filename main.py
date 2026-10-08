@@ -1,6 +1,6 @@
+from quantumexperiments import experimentlibrary as lib
 from quantumexperiments.bell import BellExperiment
 from quantumexperiments.coinflip import CoinFlipExperiment
-from quantumexperiments import experimentlibrary as lib
 
 
 def main():

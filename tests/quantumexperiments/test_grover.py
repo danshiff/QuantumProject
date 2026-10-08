@@ -52,9 +52,11 @@ class TestGrover(unittest.TestCase):
         self.reset_experiment(state=arbitrary_state)
         self.experiment.diffuse()
 
-        expected_state = Statevector([2 * initial_mean - amplitude for amplitude in arbitrary_state])
-        # The diffusion method rotates the global phase by pi. Since the phase is arbitrary, using equiv avoids testing
-        # an incidental degree of freedom.
+        expected_state = Statevector(
+            [2 * initial_mean - amplitude for amplitude in arbitrary_state]
+        )
+        # The diffusion method rotates the global phase by pi. Since the phase is
+        # arbitrary, using equiv avoids testing an incidental degree of freedom.
         self.assertTrue(self.state.equiv(expected_state))
 
     def test_grover(self):
