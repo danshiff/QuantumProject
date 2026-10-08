@@ -8,7 +8,6 @@ from quantumexperiments.grover import Grover
 
 
 class TestGrover(unittest.TestCase):
-
     def setUp(self):
         self.target_state = "1011"
         self.experiment = Grover(self.target_state)
@@ -76,5 +75,5 @@ class TestGrover(unittest.TestCase):
     @staticmethod
     def build_arbitrary_state():
         coefficients = range(1, 17)
-        normalization = math.sqrt(sum(x ** 2 for x in coefficients))
+        normalization = math.sqrt(sum(x**2 for x in coefficients))
         return Statevector([x / normalization for x in coefficients])

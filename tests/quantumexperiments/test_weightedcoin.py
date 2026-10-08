@@ -7,7 +7,6 @@ from quantumexperiments.weightedcoin import WeightedCoinFlipExperiment
 
 
 class TestWeightedCoinFlip(unittest.TestCase):
-
     def test_probability_one_fifth(self):
         experiment = WeightedCoinFlipExperiment(1 / 5)
 

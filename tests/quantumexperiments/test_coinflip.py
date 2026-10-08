@@ -6,7 +6,6 @@ from quantumexperiments.coinflip import CoinFlipExperiment
 
 
 class TestCoinFlip(unittest.TestCase):
-
     def test_prepares_equal_superposition(self):
         experiment = CoinFlipExperiment()
 

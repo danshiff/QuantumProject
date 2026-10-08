@@ -21,7 +21,7 @@ class GeneralizedGrover:
 
     def find_optimal_times(self):
         n = len(self.target)
-        N = 2 ** n
+        N = 2**n
 
         return round(math.pi / 4 * math.sqrt(N) - 0.5)
 
@@ -40,15 +40,14 @@ class GeneralizedGrover:
             if bit == "0":
                 self.circuit.x(ii)
 
-
     def mark_all_1s(self):
         last_index = len(self.target) - 1
         self.circuit.h(last_index)
-        self.circuit.mcp(self.oracle_phase,list(range(last_index)), last_index)
+        self.circuit.mcp(self.oracle_phase, list(range(last_index)), last_index)
         self.circuit.h(last_index)
 
     def unmap(self):
-        self.map_to_all_1s() # It's a neat trick that the map undoes itself
+        self.map_to_all_1s()  # It's a neat trick that the map undoes itself
 
     def diffuse(self):
         self.h_all()

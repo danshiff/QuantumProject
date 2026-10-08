@@ -6,7 +6,6 @@ from quantumexperiments.bell import BellExperiment
 
 
 class TestBell(unittest.TestCase):
-
     def test_prepares_phi_plus_state(self):
         experiment = BellExperiment()
 
