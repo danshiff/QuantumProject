@@ -17,6 +17,9 @@ dev = [
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[project.scripts]
+quantum-experiments = "cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
