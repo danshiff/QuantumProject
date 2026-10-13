@@ -5,6 +5,7 @@ from unittest.mock import patch
 from cli import get_args, main
 from quantumexperiments.bell import BellExperiment
 from quantumexperiments.coinflip import CoinFlipExperiment
+from quantumexperiments.weightedcoin import WeightedCoinFlipExperiment
 
 
 class TestGetArgs(unittest.TestCase):
@@ -48,6 +49,54 @@ class TestGetArgs(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 get_args()
 
+    def test_gets_weight(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", ".2"],
+        ):
+            args = get_args()
+            self.assertEqual(0.2, args.weight)
+
+    def test_weight_can_be_0(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", "0"],
+        ):
+            args = get_args()
+            self.assertEqual(0, args.weight)
+
+    def test_weight_can_be_1(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", "1"],
+        ):
+            args = get_args()
+            self.assertEqual(1, args.weight)
+
+    def test_weight_does_not_allow_negative(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", "-0.1"],
+        ):
+            with self.assertRaises(SystemExit):
+                get_args()
+
+    def test_weight_does_not_allow_greater_than_one(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", "1.1"],
+        ):
+            with self.assertRaises(SystemExit):
+                get_args()
+
+    def test_weight_does_not_allow_string(self):
+        with patch(
+            "sys.argv",
+            ["quantum-experiments", "weighted-coin", "--weight", "point five"],
+        ):
+            with self.assertRaises(SystemExit):
+                get_args()
+
 
 class TestMain(unittest.TestCase):
     def setUp(self):
@@ -61,6 +110,7 @@ class TestMain(unittest.TestCase):
         experiment_class=None,
         trials=None,
         outcome=None,
+        **kwargs,
     ):
         experiment_name = experiment_name or self.default_experiment_name
         experiment_class = experiment_class or self.default_experiment
@@ -71,8 +121,7 @@ class TestMain(unittest.TestCase):
             patch("cli.lib.print_outcome") as mock_print_outcome,
         ):
             mock_get_args.return_value = Namespace(
-                experiment=experiment_name,
-                trials=trials,
+                experiment=experiment_name, trials=trials, **kwargs
             )
 
             main()
@@ -99,3 +148,23 @@ class TestMain(unittest.TestCase):
             trials=10,
             outcome={"0": 5, "1": 5},
         )
+
+    def test_runs_weighted_coin_flip_experiment(self):
+        self.assert_experiment_runs(
+            experiment_name="weighted-coin",
+            experiment_class=WeightedCoinFlipExperiment,
+            outcome={"0": 800, "1": 200},
+            weight=0.2,
+        )
+
+    def test_rejects_basic_coin_flip_if_weight_param_given(self):
+        with self.assertRaises(SystemExit):
+            self.assert_experiment_runs(outcome={"0": 500, "1": 500}, weight=0.2)
+
+    def test_weighted_coin_invalid_without_weight(self):
+        with self.assertRaises(SystemExit):
+            self.assert_experiment_runs(
+                experiment_name="weighted-coin",
+                experiment_class=WeightedCoinFlipExperiment,
+                outcome={"0": 500, "1": 500},
+            )
