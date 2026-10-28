@@ -1,6 +1,16 @@
 import argparse
 
 
+def binary_string(value):
+    string = str(value)
+    for ch in string:
+        if ch not in "01":
+            raise argparse.ArgumentTypeError(f"'{value}' is not a valid binary string")
+    if string == "":
+        raise argparse.ArgumentTypeError("target may not be empty")
+    return string
+
+
 def positive_int(value):
     try:
         number = int(value)

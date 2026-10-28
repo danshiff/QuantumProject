@@ -5,6 +5,7 @@ from unittest.mock import patch
 from cli import get_args, main
 from quantumexperiments.bell import BellExperiment
 from quantumexperiments.coinflip import CoinFlipExperiment
+from quantumexperiments.grover import Grover
 from quantumexperiments.weightedcoin import WeightedCoinFlipExperiment
 
 
@@ -97,6 +98,21 @@ class TestGetArgs(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 get_args()
 
+    def test_gets_target(self):
+        with patch("sys.argv", ["quantum-experiments", "grover", "--target", "1011"]):
+            args = get_args()
+            self.assertEqual("1011", args.target)
+
+    def test_target_does_not_allow_2(self):
+        with patch("sys.argv", ["quantum-experiments", "grover", "--target", "1021"]):
+            with self.assertRaises(SystemExit):
+                get_args()
+
+    def test_target_does_not_allow_empty(self):
+        with patch("sys.argv", ["quantum-experiments", "grover", "--target", ""]):
+            with self.assertRaises(SystemExit):
+                get_args()
+
 
 class TestMain(unittest.TestCase):
     def setUp(self):
@@ -149,6 +165,14 @@ class TestMain(unittest.TestCase):
             outcome={"0": 5, "1": 5},
         )
 
+    def test_runs_grover_experiment(self):
+        self.assert_experiment_runs(
+            experiment_name="grover",
+            experiment_class=Grover,
+            outcome={"1011": 990, "1111": 5, "0000": 5},
+            target="1011",
+        )
+
     def test_runs_weighted_coin_flip_experiment(self):
         self.assert_experiment_runs(
             experiment_name="weighted-coin",
@@ -157,9 +181,21 @@ class TestMain(unittest.TestCase):
             weight=0.2,
         )
 
+    def test_rejects_basic_coin_flip_if_target_param_given(self):
+        with self.assertRaises(SystemExit):
+            self.assert_experiment_runs(outcome={"0": 500, "1": 500}, target="0101")
+
     def test_rejects_basic_coin_flip_if_weight_param_given(self):
         with self.assertRaises(SystemExit):
             self.assert_experiment_runs(outcome={"0": 500, "1": 500}, weight=0.2)
+
+    def test_grover_invalid_without_target(self):
+        with self.assertRaises(SystemExit):
+            self.assert_experiment_runs(
+                experiment_name="grover",
+                experiment_class=Grover,
+                outcome={"1011": 990, "1111": 5, "0000": 5},
+            )
 
     def test_weighted_coin_invalid_without_weight(self):
         with self.assertRaises(SystemExit):

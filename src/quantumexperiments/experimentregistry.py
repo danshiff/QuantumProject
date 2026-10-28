@@ -4,6 +4,7 @@ from typing import Callable
 import quantumexperiments.validation as validation
 from quantumexperiments.bell import BellExperiment
 from quantumexperiments.coinflip import CoinFlipExperiment
+from quantumexperiments.grover import Grover
 from quantumexperiments.weightedcoin import WeightedCoinFlipExperiment
 
 
@@ -24,6 +25,17 @@ class ExperimentDefinition:
 EXPERIMENTS = {
     "bell": ExperimentDefinition(BellExperiment),
     "coin-flip": ExperimentDefinition(CoinFlipExperiment),
+    "grover": ExperimentDefinition(
+        Grover,
+        parameters=(
+            ParameterDefinition(
+                name="target",
+                converter_type=validation.binary_string,
+                help="Binary string representing the one state the oracle is looking "
+                "for.",
+            ),
+        ),
+    ),
     "weighted-coin": ExperimentDefinition(
         WeightedCoinFlipExperiment,
         parameters=(
