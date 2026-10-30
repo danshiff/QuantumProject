@@ -42,7 +42,7 @@ EXPERIMENTS = {
             ParameterDefinition(
                 name="weight",
                 converter_type=validation.unit_interval_float,
-                help="Chance for the weighted coin to land on 1 (0 to 1 inclusive).",
+                help="Chance for the weighted coin to land on 1 (0 to 1 inclusive)."
             ),
         ),
     ),
