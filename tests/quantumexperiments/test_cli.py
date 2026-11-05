@@ -2,8 +2,8 @@ import unittest
 from argparse import Namespace
 from unittest.mock import patch
 
-from cli import get_args, main
 from quantumexperiments.bell import BellExperiment
+from quantumexperiments.cli import get_args, main
 from quantumexperiments.coinflip import CoinFlipExperiment
 from quantumexperiments.grover import Grover
 from quantumexperiments.weightedcoin import WeightedCoinFlipExperiment
@@ -132,9 +132,11 @@ class TestMain(unittest.TestCase):
         experiment_class = experiment_class or self.default_experiment
         trials = trials if trials is not None else self.default_experiment_trials
         with (
-            patch("cli.get_args") as mock_get_args,
-            patch("cli.lib.perform", return_value=outcome) as mock_perform,
-            patch("cli.lib.print_outcome") as mock_print_outcome,
+            patch("quantumexperiments.cli.get_args") as mock_get_args,
+            patch(
+                "quantumexperiments.cli.lib.perform", return_value=outcome
+            ) as mock_perform,
+            patch("quantumexperiments.cli.lib.print_outcome") as mock_print_outcome,
         ):
             mock_get_args.return_value = Namespace(
                 experiment=experiment_name, trials=trials, **kwargs
